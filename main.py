@@ -28,60 +28,59 @@ class Lexico(object):
 class MainWindow(QMainWindow):
     #
     def __init__(self):
-        super(MainWindow, self).__init__()
-        self.setFixedSize(980,650)
+        super(MainWindow, self).__init__() #Constructor de la clase padre
+        self.setFixedSize(980,650) #Tamaño de la ventana
         self.setWindowTitle("Analizador lexico")
+
+        self.tablaResultados = QTableWidget(self) #Tabla
         
-        self.tablaResultados = QTableWidget(self)
-        
-        if (self.tablaResultados.columnCount()<3):
+        if (self.tablaResultados.columnCount()<3): #Si la tabla tiene menos de 3 columnas
             self.tablaResultados.setColumnCount(3)
         
-        __qtablewidgetitem = QTableWidgetItem("TOKEN")
-        self.tablaResultados.setHorizontalHeaderItem(1, __qtablewidgetitem)
-        __qtablewidgetitem = QTableWidgetItem("CADENA")
-        self.tablaResultados.setHorizontalHeaderItem(0, __qtablewidgetitem)
-        __qtablewidgetitem = QTableWidgetItem("DESCRIPCIÓN")
-        self.tablaResultados.setHorizontalHeaderItem(2, __qtablewidgetitem)
+        __qtablewidgetitem = QTableWidgetItem("TOKEN") #Crea un item
+        self.tablaResultados.setHorizontalHeaderItem(1, __qtablewidgetitem) #Agrega el item a la tabla
+        __qtablewidgetitem = QTableWidgetItem("CADENA") #Crea un item
+        self.tablaResultados.setHorizontalHeaderItem(0, __qtablewidgetitem) #Agrega el item a la tabla
+        __qtablewidgetitem = QTableWidgetItem("DESCRIPCIÓN") #Crea un item 
+        self.tablaResultados.setHorizontalHeaderItem(2, __qtablewidgetitem) #Agrega el item a la tabla
        
-        self.tablaResultados.setColumnWidth(0,451)
-        self.tablaResultados.setColumnWidth(1,89)
-        self.tablaResultados.setColumnWidth(2,360)
-        self.tablaResultados.setGeometry(QRect(20,300,940,340))
+        self.tablaResultados.setColumnWidth(0,451) #Tamaño de las columnas
+        self.tablaResultados.setColumnWidth(1,89) #Tamaño de las columnas
+        self.tablaResultados.setColumnWidth(2,360) #Tamaño de las columnas
+        self.tablaResultados.setGeometry(QRect(20,300,940,340)) #Posicion y tamaño de la tabla
 
-        self.inputTexto = QTextEdit(self)
-        self.inputTexto.setGeometry(QRect(40,20,380,250))
+        self.inputTexto = QTextEdit(self) #Input de la cadena
+        self.inputTexto.setGeometry(QRect(40,20,380,250)) #Posicion y tamaño del input
         
-        font = QFont()
-        font.setPointSize(15)
-        self.inputTexto.setFont(font)
+        font = QFont()  #Fuente
+        font.setPointSize(15) #Tamaño de la fuente
+        self.inputTexto.setFont(font) #Agrega la fuente al input
 
-        self.boton = QPushButton("VALIDAR",self)
-        self.boton.setGeometry(QRect(440,125,100,50))
+        self.boton = QPushButton("VALIDAR",self) #Boton
+        self.boton.setGeometry(QRect(440,125,100,50)) #Posicion y tamaño del boton
 
-        self.inputTexto_2 = QTextEdit(self)
-        self.inputTexto_2.setGeometry(QRect(560,20,380,250))
-        font = QFont()
-        font.setPointSize(15)
-        self.inputTexto_2.setFont(font)
-        
-        self.boton.clicked.connect(self.Analizador)
+        self.inputTexto_2 = QTextEdit(self) #Input de la tabla
+        self.inputTexto_2.setGeometry(QRect(560,20,380,250)) #Posicion y tamaño del input
+        font = QFont() #Fuente
+        font.setPointSize(15) #Tamaño de la fuente
+        self.inputTexto_2.setFont(font) #Agrega la fuente al input
+        self.boton.clicked.connect(self.Analizador) #Conecta el boton con el metodo analizador
 
 
     def Analizador(self):
-        cadena = str(self.inputTexto.toPlainText())
-        listaLexico = list()
-        i = 0
-        size = len(cadena)
-        cadena = cadena + " "
-        cadenaTemp = ""
+        cadena = str(self.inputTexto.toPlainText()) #Obtiene el texto del input
+        listaLexico = list() #Lista de tipo Lexico
+        i = 0 #Contador
+        size = len(cadena) #Tamaño de la cadena
+        cadena = cadena + " " #Agrega un espacio al final de la cadena
+        cadenaTemp = "" #Cadena temporal
         # Ciclo que recorre la cadena
         while i < size:
             cadenaTemp = ""
             # Si es una letra
             if cadena[i].isalpha() == True:
                 # Ciclo que recorre la cadena
-                while cadena[i].isalpha() == True or cadena[i].isdigit() == True:
+                while cadena[i].isalpha() == True or cadena[i].isdigit() == True: # Si es una letra o un digito
                     # Si es una letra
                     if cadena[i] == " ":
                         break
@@ -90,28 +89,28 @@ class MainWindow(QMainWindow):
                     if i==size:
                         break
                 # Si la cadena es una palabra reservada
-                if cadenaTemp == "if":
+                if cadenaTemp == "if": # Si es if
                     tiposDeDato = Lexico(cadenaTemp, 9, "IF")
                     listaLexico.append(tiposDeDato)
-                elif cadenaTemp == "while":
+                elif cadenaTemp == "while": # Si es while
                     tiposDeDato = Lexico(cadenaTemp, 10, "WHILE")
                     listaLexico.append(tiposDeDato)
-                elif cadenaTemp == "return":
+                elif cadenaTemp == "return": # Si es return
                     tiposDeDato = Lexico(cadenaTemp, 11, "RETURN")
                     listaLexico.append(tiposDeDato)
-                elif cadenaTemp == "else":
+                elif cadenaTemp == "else": # Si es else
                     tiposDeDato = Lexico(cadenaTemp, 12, "ELSE")
                     listaLexico.append(tiposDeDato)
-                elif cadenaTemp == "int":
+                elif cadenaTemp == "int":  # Si es int
                     tiposDeDato = Lexico(cadenaTemp, 0, "Tipo de dato")
                     listaLexico.append(tiposDeDato)
-                elif cadenaTemp == "float":
+                elif cadenaTemp == "float": # Si es float
                     tiposDeDato = Lexico(cadenaTemp, 0, "Tipo de dato")
                     listaLexico.append(tiposDeDato)
-                elif cadenaTemp == "char":
+                elif cadenaTemp == "char": # Si es char
                     tiposDeDato = Lexico(cadenaTemp, 0, "Tipo de dato")
                     listaLexico.append(tiposDeDato)
-                elif cadenaTemp == "void":
+                elif cadenaTemp == "void": # Si es void
                     tiposDeDato = Lexico(cadenaTemp, 0, "Tipo de dato")
                     listaLexico.append(tiposDeDato)
                 else:
@@ -213,16 +212,16 @@ class MainWindow(QMainWindow):
                 i = i+1
 
     
-        row=0
-        self.tablaResultados.setRowCount(len(listaLexico))
-        for tiposDeDato in listaLexico:
-            aux = tiposDeDato.obtenercadena()
-            aux2 = tiposDeDato.obtenertoken()
-            aux3 = tiposDeDato.obtenerdescripcion()
-            self.tablaResultados.setItem(row,0, QtWidgets.QTableWidgetItem(str(aux)))
-            self.tablaResultados.setItem(row,1, QtWidgets.QTableWidgetItem(str(aux2)))
-            self.tablaResultados.setItem(row,2, QtWidgets.QTableWidgetItem(str(aux3)))
-            row = row+1
+        row=0 #Fila
+        self.tablaResultados.setRowCount(len(listaLexico)) #Numero de filas
+        for tiposDeDato in listaLexico: #Ciclo que recorre la lista
+            aux = tiposDeDato.obtenercadena() #Obtiene la cadena
+            aux2 = tiposDeDato.obtenertoken() #Obtiene el token
+            aux3 = tiposDeDato.obtenerdescripcion() #Obtiene la descripcion
+            self.tablaResultados.setItem(row,0, QtWidgets.QTableWidgetItem(str(aux))) #Agrega la cadena a la tabla
+            self.tablaResultados.setItem(row,1, QtWidgets.QTableWidgetItem(str(aux2))) #Agrega el token a la tabla
+            self.tablaResultados.setItem(row,2, QtWidgets.QTableWidgetItem(str(aux3))) #Agrega la descripcion a la tabla
+            row = row+1 #Aumenta la fila
 
 
 
